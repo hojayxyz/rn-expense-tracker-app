@@ -29,7 +29,6 @@ const DUMMY_EXPENSES = [
     date: new Date('2024-05-30'),
   },
 ];
-expenses = { DUMMY_EXPENSES };
 
 function ExpensesOutput({ expenses, expensesPeriod }) {
   return (
