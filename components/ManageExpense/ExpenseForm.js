@@ -1,29 +1,76 @@
-import { View } from 'react-native';
+import { StyleSheet, Text, View } from 'react-native';
 import Input from './Input';
+import { useState } from 'react';
 
 function ExpenseForm() {
-  function amountChangedHandler() {}
+  const [inputValues, setInputValues] = useState({
+    amount: '',
+    date: '',
+    description: '',
+  });
+
+  function inputChangedHandler(inputIdentifier, enteredValue) {
+    setInputValues((currInputValues) => {
+      return {
+        ...currInputValues,
+        [inputIdentifier]: enteredValue,
+      };
+    });
+  }
 
   return (
-    <View>
+    <View style={styles.form}>
+      <Text style={styles.title}>Your Expense</Text>
+      <View style={styles.inputsRow}>
+        <Input
+          style={styles.rowInput}
+          label="Amount"
+          textInputConfig={{
+            keyboardType: 'decimal-pad',
+            onChangeText: inputChangedHandler.bind(this, 'amount'),
+            value: inputValues.amount,
+          }}
+        />
+        <Input
+          style={styles.rowInput}
+          label="Date"
+          textInputConfig={{
+            placeholder: 'YYYY-MM-DD',
+            maxLength: 10,
+            onChangeText: inputChangedHandler.bind(this, 'date'),
+            value: inputValues.date,
+          }}
+        />
+      </View>
       <Input
-        label="Amount"
+        label="Description"
         textInputConfig={{
-          keyboardType: 'decimal-pad',
-          onChangeText: amountChangedHandler,
+          onChangeText: inputChangedHandler.bind(this, 'description'),
+          value: inputValues.description,
         }}
       />
-      <Input
-        label="Date"
-        textInputConfig={{
-          placeholder: 'YYYY-MM-DD',
-          maxLength: 10,
-          onChangeText: () => {},
-        }}
-      />
-      <Input label="Description" textInputConfig={{}} />
     </View>
   );
 }
 
 export default ExpenseForm;
+
+const styles = StyleSheet.create({
+  inputsRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  rowInput: {
+    flex: 1,
+  },
+  form: {
+    marginTop: 80,
+  },
+  title: {
+    fontSize: 24,
+    fontWeight: 'bold',
+    color: 'white',
+    marginVertical: 24,
+    textAlign: 'center',
+  },
+});
